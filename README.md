@@ -1,6 +1,6 @@
 # AromaCrashHandlerModule
 
-A Wii U [Aroma](https://aroma.foryour.cafe) module (`.wms`) that catches application CPU
+A Wii U [Aroma](https://aroma.foryour.cafe) module that catches application CPU
 exceptions and shows a register / stack / code dump on screen, styled like the classic
 TCPGecko / Geckiine crash screen.
 
@@ -129,6 +129,9 @@ Match the code style of the other wiiu-env projects:
 ```sh
 docker run --rm -v ${PWD}:/src ghcr.io/wiiu-env/clang-format:13.0.0-2 -r ./source -i
 ```
+
+## Credits
+- [wiiu-env](https://github.com/wiiu-env) - Aroma environment
 
 ## License
 
