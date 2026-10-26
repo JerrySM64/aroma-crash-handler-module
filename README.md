@@ -1,8 +1,11 @@
-# AromaCrashHandlerModule
+# Aroma Crash Handler Module
 
 A Wii U [Aroma](https://aroma.foryour.cafe) module that catches application CPU
 exceptions and shows a register / stack / code dump on screen, styled like the classic
 TCPGecko / Geckiine crash screen.
+
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8e0a8801-ddb6-4198-bd1f-4777bb484549" />
+
 
 ## What it does
 
