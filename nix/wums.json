@@ -1,0 +1,7 @@
+{
+  "imageName": "ghcr.io/wiiu-env/wiiumodulesystem",
+  "imageDigest": "sha256:d63530318ee11912fa988de1eccfaa4a8495137847432e5d3622873ee5afb3bb",
+  "hash": "sha256-gE7s4D12Wa5cc+6OcFdMJ8NOLwrroO5mMWZqwfrJh+M=",
+  "finalImageName": "ghcr.io/wiiu-env/wiiumodulesystem",
+  "finalImageTag": "20260418"
+}
