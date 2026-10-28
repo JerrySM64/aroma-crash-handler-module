@@ -1,10 +1,10 @@
 # Aroma Crash Handler Module
 
-A Wii U [Aroma](https://aroma.foryour.cafe) module that catches application CPU
-exceptions and shows a register / stack / code dump on screen, styled like the classic
+A Wii U [Aroma](https://aroma.foryour.cafe) module that catches exceptions and shows a register / stack / code dump on screen, styled like the classic
 [SDGeckiine](https://github.com/Sheldon10095/SDGeckiine) crash screen.
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/8e0a8801-ddb6-4198-bd1f-4777bb484549" />
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/453aea73-f081-470c-8bc3-7091287774a0" />
+
 
 
 ## What it does
