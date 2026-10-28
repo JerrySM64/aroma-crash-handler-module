@@ -1,6 +1,6 @@
 #include "report.h"
 #include "snapshot.h"
-#include "version.h"
+#include "title.h"
 #include <stdint.h>
 
 static void append_hex8(char *dst, uint32_t value) {
@@ -48,7 +48,6 @@ static void build_spec_row(char *dst, const char *label1, uint32_t value1, const
     char *p = dst;
     p       = append_reg_cell(p, label1, value1);
     *p++    = ' ';
-    *p++    = ' ';
     p       = append_reg_cell(p, label2, value2);
     *p      = 0;
 }
@@ -58,9 +57,7 @@ static void build_spec_row3(char *dst, const char *label1, uint32_t value1, cons
     char *p = dst;
     p       = append_reg_cell(p, label1, value1);
     *p++    = ' ';
-    *p++    = ' ';
     p       = append_reg_cell(p, label2, value2);
-    *p++    = ' ';
     *p++    = ' ';
     p       = append_reg_cell(p, label3, value3);
     *p      = 0;
@@ -159,10 +156,9 @@ uint32_t crash_report_build(const CrashSnapshot *snapshot,
     build_line(lines[count], "");
     count++;
 
-    p  = lines[count];
-    p  = append_str(p, CRASH_MODULE_NAME);
-    p  = append_str(p, " v");
-    p  = append_str(p, CRASH_MODULE_VERSION);
+    p = lines[count];
+    p = append_str(p, "- ");
+    p = append_str(p, crash_title_get_name());
     *p = 0;
     count++;
 
@@ -180,7 +176,10 @@ uint32_t crash_report_build_no_context(uint32_t exceptionType,
     p       = append_str(p, crash_exception_type_name(exceptionType));
     p       = append_str(p, " Exception! (no context)");
     *p      = 0;
-    build_line(lines[1], CRASH_MODULE_NAME " v" CRASH_MODULE_VERSION);
+    p       = lines[1];
+    p       = append_str(p, "- ");
+    p       = append_str(p, crash_title_get_name());
+    *p      = 0;
     return 2;
 }
 
