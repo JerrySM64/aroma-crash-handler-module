@@ -107,19 +107,23 @@ export INCLUDE	:=	$(foreach dir,$(INCLUDES),-I$(CURDIR)/$(dir)) \
 
 export LIBPATHS	:=	$(foreach dir,$(LIBDIRS),-L$(dir)/lib)
 
-.PHONY: $(BUILD) clean all
+.PHONY: $(BUILD) clean all plugin
 
 #-------------------------------------------------------------------------------
-all: $(BUILD)
+all: $(BUILD) plugin
 
 $(BUILD):
 	@[ -d $@ ] || mkdir -p $@
 	@$(MAKE) --no-print-directory -C $(BUILD) -f $(CURDIR)/Makefile
 
+plugin: $(BUILD)
+	@$(MAKE) --no-print-directory -C plugin
+
 #-------------------------------------------------------------------------------
 clean:
 	@echo clean ...
 	@rm -fr $(BUILD) $(TARGET).wms $(TARGET).elf
+	@$(MAKE) --no-print-directory -C plugin clean
 
 #-------------------------------------------------------------------------------
 else

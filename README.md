@@ -1,7 +1,8 @@
 # Aroma Crash Handler Module
 
-A Wii U [Aroma](https://aroma.foryour.cafe) module that catches exceptions and shows a register / stack / code dump on screen, styled like the classic
-[SDGeckiine](https://github.com/Sheldon10095/SDGeckiine) crash screen.
+A Wii U [Aroma](https://aroma.foryour.cafe) module (plus a small config plugin) that
+catches exceptions and shows a crash screen. The optional full
+register / stack / code dump is styled like the classic [SDGeckiine](https://github.com/Sheldon10095/SDGeckiine) crash screen.
 
 <img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/453aea73-f081-470c-8bc3-7091287774a0" />
 
@@ -9,13 +10,24 @@ A Wii U [Aroma](https://aroma.foryour.cafe) module that catches exceptions and s
 
 ## What it does
 
-When an application crashes with a CPU exception (DSI, ISI, Program, ...), the module
-shows a text screen on the TV and the GamePad with:
+When an application crashes with an exception (DSI, ISI, Program, ...), the module shows
+a text screen on the TV and the GamePad. By default it is a short, friendly message:
+
+> Your console crashed. Hold the POWER button for 4 seconds to turn the console off.
+>
+> For more information, use "WiiUCrashLogDumper" to dump the logs for this crash.
+
+The full technical dump (the "stack dump") looks intimidating, so it is hidden by default.
+In the Aroma plugin config menu (L + DOWN + SELECT) open **Crash Handler** and set
+**Show stack dump** to *Yes* to get it. The setting is saved and applied immediately. The dump shows:
 
 - the exception type,
 - all 32 GPRs, LR, CTR, XER, SRR0, SRR1, DAR, DSISR,
 - a short stack dump (return-address chain),
-- a code dump (instruction words at the faulting PC).
+- a code dump (instruction words at the faulting PC),
+- the name of the game that crashed.
+
+The full dump is written to the log (`OSReport` / LoggingModule) regardless of this setting.
 
 The screen stays up (the system halts) until the console is powered off or rebooted. The
 module does **not** fix or recover the crashed game, does not symbolicate, and adds no
@@ -23,9 +35,11 @@ work to normal frames.
 
 ## Building
 
-Dependencies: [wut](https://github.com/devkitPro/wut) and
-[WiiUModuleSystem](https://github.com/wiiu-env/WiiUModuleSystem) with the devkitPPC
-toolchain. Pick one of the four routes below — all produce `CrashHandlerModule.wms`.
+Dependencies: [wut](https://github.com/devkitPro/wut),
+[WiiUModuleSystem](https://github.com/wiiu-env/WiiUModuleSystem) and
+[WiiUPluginSystem](https://github.com/wiiu-env/WiiUPluginSystem) with the devkitPPC
+toolchain. Pick one of the four routes below — a single `make` builds both
+`ExceptionHandler.wms` (the module) and `plugin/CrashHandlerConfig.wps` (the plugin).
 
 ### Using the Dockerfile (recommended, works everywhere)
 
@@ -48,7 +62,7 @@ use `$(pwd -W)`.
 nix develop -c make
 ```
 
-The flake pins devkitPPC, wut and WiiUModuleSystem by digest — nothing else to install.
+The flake pins devkitPPC, wut, WiiUModuleSystem and WiiUPluginSystem by digest — nothing else to install.
 
 ### Native on Linux
 
@@ -68,12 +82,14 @@ The flake pins devkitPPC, wut and WiiUModuleSystem by digest — nothing else to
    export DEVKITPPC=$DEVKITPRO/devkitPPC
    ```
 
-3. WiiUModuleSystem is not available through the devkitPro repositories; build and
-   install it into the devkitPro prefix:
+3. WiiUModuleSystem and WiiUPluginSystem are not available through the devkitPro
+   repositories; build and install them into the devkitPro prefix:
 
    ```sh
    git clone https://github.com/wiiu-env/WiiUModuleSystem
    make -C WiiUModuleSystem install # installs into $DEVKITPRO/wums
+   git clone https://github.com/wiiu-env/WiiUPluginSystem
+   make -C WiiUPluginSystem install # installs into $DEVKITPRO/wups
    ```
 
 4. Build:
@@ -103,18 +119,20 @@ MSYS2 following the [devkitPro pacman guide](https://devkitpro.org/wiki/devkitPr
    export DEVKITPPC=$DEVKITPRO/devkitPPC
    ```
 
-4. Install WiiUModuleSystem as in the Linux instructions above (same `make -C ... install`, same `$DEVKITPRO/wums` target) and run `make`.
+4. Install WiiUModuleSystem and WiiUPluginSystem as in the Linux instructions above (same `make -C ... install`, same `$DEVKITPRO/wums` and `$DEVKITPRO/wups` targets) and run `make`.
 
 ## Installing
 
-Copy the built `CrashHandlerModule.wms` to the SD card:
+Copy both built files to the SD card:
 
-```
-sd:/wiiu/environments/[ENVIRONMENT]/modules
-```
+| File                              | Destination                                       |
+|-----------------------------------|---------------------------------------------------|
+| `ExceptionHandler.wms`            | `sd:/wiiu/environments/[ENVIRONMENT]/modules`     |
+| `plugin/CrashHandlerConfig.wps`   | `sd:/wiiu/environments/[ENVIRONMENT]/plugins`     |
 
 (`[ENVIRONMENT]` is a placeholder for the environment name you use, e.g. `aroma`.)
-The module is loaded at boot by the [WUMSLoader](https://github.com/wiiu-env/WUMSLoader).
+Both are built with the same version number ([source/version.h](source/version.h)), so you
+can easily tell what version you have installed.
 
 ## Logging
 

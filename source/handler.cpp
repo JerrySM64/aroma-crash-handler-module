@@ -1,5 +1,6 @@
 #include "handler.h"
 #include "backtrace.h"
+#include "config.h"
 #include "report.h"
 #include "screen.h"
 #include "snapshot.h"
@@ -89,6 +90,10 @@ static BOOL exception_cb(OSContext *ctx, uint32_t type) {
     }
 
     log_report_lines(gReportLines, lineCount);
+
+    if (!crash_config_get_show_stack_dump()) {
+        lineCount = crash_report_build_simple(gReportLines);
+    }
 
     spin_ticks(0x100000);
     crash_screen_show(gReportLines, lineCount);

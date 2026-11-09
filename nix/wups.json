@@ -1,0 +1,7 @@
+{
+  "imageName": "ghcr.io/wiiu-env/wiiupluginsystem",
+  "imageDigest": "sha256:e772e5ce36c41ff20835f74d8caafd49b57aa28a46ed148be43218a3a265c2f0",
+  "hash": "sha256-WCdPTUA3dJoYo4a5X/O7df1ZhgHXVZm+Jn/rsY63hsI=",
+  "finalImageName": "ghcr.io/wiiu-env/wiiupluginsystem",
+  "finalImageTag": "latest"
+}

@@ -183,6 +183,19 @@ uint32_t crash_report_build_no_context(uint32_t exceptionType,
     return 2;
 }
 
+uint32_t crash_report_build_simple(char lines[CRASH_REPORT_MAX_LINES][CRASH_REPORT_LINE_LEN]) {
+    if (lines == nullptr) {
+        return 0;
+    }
+
+    build_line(lines[0], "Your console crashed. Hold the POWER button for 4 seconds");
+    build_line(lines[1], "to turn the console off.");
+    build_line(lines[2], "");
+    build_line(lines[3], "For more information, use \"WiiUCrashLogDumper\" to dump the");
+    build_line(lines[4], "logs for this crash.");
+    return 5;
+}
+
 uint32_t crash_report_join(char *out, uint32_t outSize,
                            const char lines[][CRASH_REPORT_LINE_LEN], uint32_t count) {
     if (out == nullptr || outSize == 0) {

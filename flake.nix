@@ -41,12 +41,29 @@
           '';
         };
 
+        wups = pkgs.stdenvNoCC.mkDerivation {
+          name = "wiiupluginsystem";
+          src = pkgs.dockerTools.pullImage (
+            builtins.fromJSON (builtins.readFile ./nix/wups.json)
+          );
+          phases = [ "buildPhase" ];
+          buildPhase = ''
+            tar -xf $src
+            for archive in $(find . -maxdepth 1 -name '*.tar'); do
+              tar -xf "$archive"
+            done
+            mkdir -p $out
+            cp -r artifacts/wups $out/wups
+          '';
+        };
+
         devkitproRoot = pkgs.runCommand "devkitpro-root" { } ''
           mkdir -p $out
           for entry in ${devkitPPC}/opt/devkitpro/*; do
             ln -s "$entry" "$out/$(basename "$entry")"
           done
           ln -s ${wums}/wums $out/wums
+          ln -s ${wups}/wups $out/wups
         '';
 
         clangFormat = pkgs.clang-tools;
@@ -70,6 +87,7 @@
             DEVKITPPC = "${devkitproRoot}/devkitPPC";
             WUT_ROOT = "${devkitproRoot}/wut";
             WUMS_ROOT = "${devkitproRoot}/wums";
+            WUPS_ROOT = "${devkitproRoot}/wups";
             DEJAVU_MONO_PATH = "${pkgs.dejavu_fonts}/share/fonts/truetype/DejaVuSansMono.ttf";
           };
 
