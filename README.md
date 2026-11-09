@@ -4,9 +4,7 @@ A Wii U [Aroma](https://aroma.foryour.cafe) module (plus a small config plugin) 
 catches exceptions and shows a crash screen. The optional full
 register / stack / code dump is styled like the classic [SDGeckiine](https://github.com/Sheldon10095/SDGeckiine) crash screen.
 
-<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/453aea73-f081-470c-8bc3-7091287774a0" />
-
-
+<img width="1920" height="1080" alt="image" src="https://github.com/user-attachments/assets/a9497d78-c67f-4fc4-b75f-46961e206dd5" />
 
 ## What it does
 
